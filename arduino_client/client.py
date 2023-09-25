@@ -23,16 +23,16 @@ parser.add_argument(
     "-port",
     type=str,
     help="The port where the rest api is",
-    default="3000",
+    default="2000",
     required=False,
 )
 args = parser.parse_args()
 
-FORMAT = ["ax", "ay", "az", "gx", "gy", "gz", "servo pos"]
-REQUESTED_POS = "requested pos"
+FORMAT = ["ax", "ay", "az", "gx", "gy", "gz", "servo_pos"]
+REQUESTED_POS = "requested_pos"
 
 if __name__ == "__main__":
-    destination = "http://localhost:" + args.port + "/api/sensors"
+    destination = "http://localhost:" + args.port + "/api/sensors/"
     com = serial.Serial(args.device, baudrate=args.baudrate)
 
     # previous requested servo pos
@@ -62,7 +62,7 @@ if __name__ == "__main__":
             }
             resp = requests.patch(destination, json=raw_data)
 
-        resp = requests.get(destination, json={"name": REQUESTED_POS})
+        resp = requests.get(destination + REQUESTED_POS)
         if resp.status_code == 404:
             pass
         else:

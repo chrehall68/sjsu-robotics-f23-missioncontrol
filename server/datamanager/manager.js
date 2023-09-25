@@ -35,9 +35,10 @@ const updateSensor = (req, res) => {
 
 // get
 const getSensor = (req, res) => {
-    temp = sensors.find((val) => val.name == req.body.name)
+    const { sensorID } = req.params
+    temp = sensors.find((val) => val.name == sensorID)
     if (temp === undefined) {
-        res.status(404).send({ name: req.body.name, value: -1, timestamp: 0 })
+        res.status(404).send({ name: sensorID, value: -1, timestamp: 0 })
     }
     else {
         res.send(temp)
