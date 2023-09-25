@@ -1,8 +1,7 @@
 import { Key, useEffect, useState } from "react";
-import { LineChart, Line, YAxis, XAxis } from "recharts";
-import TIMEOUT from "./constants";
+import { LineChart, Line, YAxis } from "recharts";
+import constants from "./constants";
 
-const MAXPOINTS = 30;
 function Reader(key: Key, update: Number, sensor: string) {
     const [val, setVal] = useState(0)
     const [timestamp, setTimestamp] = useState(0)
@@ -10,18 +9,18 @@ function Reader(key: Key, update: Number, sensor: string) {
     const [clicked, setClicked] = useState(false);
 
     useEffect(() => {
-        fetch(`http://localhost:2000/api/sensors/${sensor}`, { "mode": "cors" }).then(resp => resp.json())
+        fetch(`${constants.API_URL}/${sensor}`, { "mode": "cors" }).then(resp => resp.json())
             .then(data => {
                 setVal(Number(data.value));
                 setTimestamp(Number(data.timestamp));
-                if (stack.length > MAXPOINTS) { setStack([...stack.filter((val, index) => index != 0), data]) }
+                if (stack.length > constants.MAXPOINTS) { setStack([...stack.filter((val, index) => index != 0), data]) }
                 else { setStack([...stack, data]); }
             })
             .catch((err) => console.log("failed because of ", err))
-    }, [update])
+    }, [update, sensor, stack])
 
     // if timed out
-    if (new Date().getTime() / 1000 - timestamp > TIMEOUT) {
+    if (new Date().getTime() / 1000 - timestamp > constants.TIMEOUT) {
         return <div key={key} className="w-full">
             <p>Sorry, {sensor} is not currently connected.</p>
         </div>

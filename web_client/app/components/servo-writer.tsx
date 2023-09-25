@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import TIMEOUT from "./constants";
+import constants from "./constants";
 
 export default function ServoWriter() {
     const [value, setVal] = useState(0);
@@ -7,13 +7,13 @@ export default function ServoWriter() {
     const [update, setUpdate] = useState(0);
 
     useEffect(() => {
-        fetch(`http://localhost:2000/api/sensors/servo_pos`, { "mode": "cors" }).then(resp => resp.json()).then(data => { if (update == 0) { setVal(Number(data.value)); } setTimestamp(Number(data.timestamp)) }).catch((err) => console.log("failed because of ", err))
+        fetch(`${constants.API_URL}/servo_pos`, { "mode": "cors" }).then(resp => resp.json()).then(data => { if (update == 0) { setVal(Number(data.value)); } setTimestamp(Number(data.timestamp)) }).catch((err) => console.log("failed because of ", err))
     }, [update]);
 
     // automatically refresh every second (not as critical as reading sensor data)
     setInterval(() => setUpdate(update + 1), 1000);
 
-    if (new Date().getTime() / 1000 - timestamp > TIMEOUT) {
+    if (new Date().getTime() / 1000 - timestamp > constants.TIMEOUT) {
         return <div className="w-3/4">Sorry, the servo is currently not connected.</div>
     }
     else {
