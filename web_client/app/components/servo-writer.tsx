@@ -10,11 +10,11 @@ export default function ServoWriter() {
         fetch(`http://localhost:2000/api/sensors/servo_pos`, { "mode": "cors" }).then(resp => resp.json()).then(data => { if (update == 0) { setVal(Number(data.value)); } setTimestamp(Number(data.timestamp)) }).catch((err) => console.log("failed because of ", err))
     }, [update]);
 
-    // automatically refresh
-    setInterval(() => setUpdate(update + 1), 200);
+    // automatically refresh every second (not as critical as reading sensor data)
+    setInterval(() => setUpdate(update + 1), 1000);
 
     if (new Date().getTime() / 1000 - timestamp > TIMEOUT) {
-        return <div>Sorry, the servo is currently not connected.</div>
+        return <div className="w-3/4">Sorry, the servo is currently not connected.</div>
     }
     else {
         return <div>

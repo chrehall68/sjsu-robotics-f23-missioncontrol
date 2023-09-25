@@ -28,7 +28,7 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-FORMAT = ["ax", "ay", "az", "gx", "gy", "gz", "servo_pos"]
+FORMAT = ["accel_x", "accel_y", "accel_z", "gyro_x", "gyro_y", "gyro_z", "servo_pos"]
 REQUESTED_POS = "requested_pos"
 
 if __name__ == "__main__":
@@ -49,7 +49,6 @@ if __name__ == "__main__":
 
     while 1:
         line = str(com.readline())
-        print(line)
 
         if len(re.findall("accel", line)) == 0:
             continue

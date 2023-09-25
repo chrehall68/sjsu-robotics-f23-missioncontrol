@@ -40,11 +40,11 @@ npm run dev
 ## Valid sensors
 Sensors can be accessed via get methods to `http://localhost:2000/api/sensors/(sensorName)`
 where `(sensorName)` is the name of the sensor, which should be one of the following:
-* `ax` - accel x
-* `ay` - accel y
-* `az` - accel z
-* `gx` - gyro x
-* `gy` - gyro y
-* `gz` - gyro z
+* `accel_x` - accelerometer readigs in the x axis
+* `accel_y` - accelerometer readigs in the y axis
+* `accel_z` - accelerometer readigs in the z axis
+* `gyro_x` - gyroscope readings in the x axis
+* `gyro_y` - gyroscope readings in the y axis
+* `gyro_z` - gyroscope readings in the z axis
 * `servo_pos` - position that the servo is currently set to
 * `requested_pos` - position that the servo should be set to
