@@ -35,11 +35,11 @@ namespace constants
 namespace mpu6050
 {
     const char address = 0x68;
-    const char accelXOut = 59;
-    const char accelYOut = 61;
-    const char accelZOut = 63;
+    const char accelXOut = 0x3B; // 59
+    const char accelYOut = 0x3D;
+    const char accelZOut = 0x3F;
 
-    const char gyroXOut = 0x43;
+    const char gyroXOut = 0x43; // 67
     const char gyroYOut = 0x45;
     const char gyroZOut = 0x47;
 
