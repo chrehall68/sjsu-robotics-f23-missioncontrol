@@ -4,17 +4,15 @@
  * We also need to be able to see current servo position
  * and update the offset
  */
-const express = require("express")
-
 
 // stores name, value, timestamp (in ms since epoch)
 var sensors = []
 
-// post
-const postSensor = (req, res) => {
+// post and put
+const addSensor = (req, res) => {
     const { body } = req
-    temp = sensors.find((val) => val.name == body.name)
-    if (temp === undefined) {
+    temp = sensors.find((val) => val.name === body.name)
+    if (temp === undefined && body.name !== undefined) {
         sensors.push({ "name": body.name, "value": body.value, "timestamp": body.timestamp })
     }
     else {
@@ -26,17 +24,21 @@ const postSensor = (req, res) => {
 
 // patch
 const updateSensor = (req, res) => {
-    const { body } = req
-    temp = sensors.find((val) => val.name == body.name)
-    temp.value = body.value
-    temp.timestamp = body.timestamp
-    res.send(`Updated sensor ${body.name}`)
+    const { sensorID } = req.params
+    if (sensorID !== req.body.name) {
+        return;
+    }
+
+    temp = sensors.find((val) => val.name === sensorID)
+    temp.value = req.body.value
+    temp.timestamp = req.body.timestamp
+    res.send(`Updated sensor ${req.body.name}`)
 }
 
 // get
 const getSensor = (req, res) => {
     const { sensorID } = req.params
-    temp = sensors.find((val) => val.name == sensorID)
+    temp = sensors.find((val) => val.name === sensorID)
     if (temp === undefined) {
         res.status(404).send({ name: sensorID, value: -1, timestamp: 0 })
     }
@@ -55,7 +57,8 @@ const getAllSensors = (req, res) => {
 
 // delete
 const deleteSensor = (req, res) => {
-    const index = sensors.findIndex((val) => val.name == req.body.name)
+    const { sensorID } = req.params
+    const index = sensors.findIndex((val) => val.name === sensorID)
     if (index != -1) {
         sensors.splice(index, 1)  // remove that element
         res.send("deleted")
@@ -66,7 +69,7 @@ const deleteSensor = (req, res) => {
 }
 
 module.exports = {
-    postSensor,
+    addSensor,
     updateSensor,
     getSensor,
     deleteSensor,
