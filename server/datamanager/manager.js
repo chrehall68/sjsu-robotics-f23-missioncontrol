@@ -26,6 +26,7 @@ const addSensor = (req, res) => {
 const updateSensor = (req, res) => {
     const { sensorID } = req.params
     if (sensorID !== req.body.name) {
+        res.status(400); // invalid request
         return;
     }
 
